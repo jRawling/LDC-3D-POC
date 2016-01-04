@@ -3,50 +3,51 @@ using System.Collections;
 
 public class Highlighter : MonoBehaviour
 {
+    Material highlightMaterial;
+    Material defaultMaterial;
+    Transform currentlySelectedTransform;
 
-    Shader defaultShader;
-    bool isHighlighted;
-
-    // Use this for initialization
     void Start()
     {
-        isHighlighted = false;
+        highlightMaterial = Resources.Load("Materials/Glow", typeof(Material)) as Material;
     }
 
-    // Update is called once per frame
     void Update()
     {
-
-    }
-
-    void OnMouseDown()
-    {
-        Debug.Log("mouse down");
-    }
-
-    void OnMouseEnter()
-    {
-        Debug.Log("mouse enter");
-
-        if (!isHighlighted)
+        if (Input.GetMouseButtonUp(0))
         {
-            var renderer = GetComponent<Renderer>();
-            defaultShader = renderer.material.shader;
-            renderer.material.shader = Shader.Find("VacuumShaders/The Amazing Wireframe/(Preview) Color and Tangent");
-            //   renderer.material.shader = Shader.Find("Custom/OcclusionOutline");
-            isHighlighted = true;
+            RaycastHit hitInfo = new RaycastHit();
+            bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
+            if (hit)
+            {
+                Select(hitInfo.transform);
+                Debug.Log("Hit " + hitInfo.transform.gameObject.name);
+            }
+            else
+            {
+                Deselect();
+                Debug.Log("No hit");
+            }
         }
     }
 
-    void OnMouseExit()
+    void Select(Transform hitTransform)
     {
-        Debug.Log("mouse exit");
+        Deselect();
+        currentlySelectedTransform = hitTransform;
+        Renderer renderer = hitTransform.GetComponent<Renderer>();
+        defaultMaterial = renderer.material;
+        renderer.material = highlightMaterial;
+    }
 
-        if (isHighlighted)
+    void Deselect()
+    {
+        if (currentlySelectedTransform != null)
         {
-            var renderer = GetComponent<Renderer>();
-            renderer.material.shader = defaultShader;
-            isHighlighted = false;
+            Renderer renderer = currentlySelectedTransform.GetComponent<Renderer>();
+            renderer.material = defaultMaterial;
+            currentlySelectedTransform = null;
+            defaultMaterial = null;
         }
     }
 }

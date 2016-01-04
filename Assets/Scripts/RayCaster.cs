@@ -4,13 +4,6 @@ using System.Collections;
 
 public class RayCaster : MonoBehaviour
 {
-    Camera camera;
-
-    void Start()
-    {
-        camera = GetComponent<Camera>();
-    }
-
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
