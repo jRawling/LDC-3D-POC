@@ -12,7 +12,7 @@ public class RayCaster : MonoBehaviour
             bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
             if (hit)
             {
-                Debug.Log("Hit " + hitInfo.transform.gameObject.name);
+                Debug.Log("Hit " + hitInfo.transform.gameObject.name + " at: " + hitInfo.point.x + ", " + hitInfo.point.y + ", " + hitInfo.point.z);
             }
             else
             {
