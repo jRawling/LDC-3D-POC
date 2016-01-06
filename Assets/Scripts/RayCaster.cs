@@ -13,6 +13,7 @@ public class RayCaster : MonoBehaviour
             if (hit)
             {
                 Debug.Log("Hit " + hitInfo.transform.gameObject.name + " at: " + hitInfo.point.x + ", " + hitInfo.point.y + ", " + hitInfo.point.z);
+                Debug.Log(Camera.main.transform.forward.x + ", " + Camera.main.transform.forward.y + ", " + Camera.main.transform.forward.z);
             }
             else
             {
